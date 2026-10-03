@@ -31,13 +31,16 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📸 Demo Walkthrough
 
-Describe your fixed game in numbered steps so a reader can follow along without watching a video:
+A sample game on **Normal** difficulty (range 1–100, 8 attempts), where the secret number is 55:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. The game starts with "Guess a number between 1 and 100. Attempts left: 8" and a score of 0.
+2. The user enters `abc`. The game shows "That is not a number." and the attempt is not used (still 8 left).
+3. The user enters `40`. The game shows "📈 Go HIGHER!" (Too Low). The score drops to -5 and 7 attempts are left.
+4. The user enters `70`. The game shows "📉 Go LOWER!" (Too High). The score drops to -10 and 6 attempts are left.
+5. The user enters `55`. The game shows "🎉 Correct!", balloons appear, and the score becomes 60 (100 - 10 × 3 = 70 points for winning on attempt 3, added to -10).
+6. The game ends: further guesses show "You already won. Start a new game to play again."
+7. The user clicks **New Game**. The score, attempts and history reset, and a new secret is chosen within the current difficulty's range.
+8. Switching to **Easy** also starts a fresh game, and the message changes to "Guess a number between 1 and 20."
 
 **Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
 
