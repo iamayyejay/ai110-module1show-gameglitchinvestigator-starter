@@ -25,9 +25,31 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+- [x] Describe the game's purpose.
+
+  **Purpose:** Glitchy Guesser is a number-guessing game built with Streamlit. The game picks a secret number in a range set by the difficulty (Easy 1–20, Normal 1–100, Hard 1–50). The player has a limited number of attempts to find it, and after each guess the game says "Go HIGHER" or "Go LOWER". Points are awarded for winning quickly and deducted for wrong guesses.
+
+  The project is also a debugging exercise. The original AI-generated version was full of bugs: hints that lied, a secret that changed, and scoring that made no sense. The goal is to find those bugs, fix them, and move the game logic into `logic_utils.py` so it can be tested with `pytest`.
+
+- [x] Detail which bugs you found.
+
+  1. **Lying hints:** on every even attempt `app.py` converted the secret to a string before calling `check_guess`, so the comparison fell into a string-comparison fallback and gave wrong "Higher/Lower" hints.
+  2. **New Game ignored the difficulty:** it always picked a secret from 1–100, and it didn't reset the score, status or history, so a finished game couldn't be replayed.
+  3. **Secret didn't match the range:** changing the difficulty kept the old secret, which could be outside the new range.
+  4. **Hardcoded range message:** the prompt always said "between 1 and 100", whatever the difficulty.
+  5. **Off-by-one attempts:** the attempt counter started at 1, so "Attempts left" was one too low and players lost an attempt.
+  6. **Invalid input cost an attempt:** blank or non-numeric guesses were counted as attempts.
+  7. **Odd scoring:** a "Too High" guess gave +5 points on even attempts, and a win scored `100 - 10 * (attempt + 1)`, which over-penalised.
+
+- [x] Explain what fixes you applied.
+
+  1. **Refactor:** moved `get_range_for_difficulty`, `parse_guess`, `check_guess` and `update_score` from `app.py` into `logic_utils.py`; `app.py` now imports them.
+  2. **Hints:** removed the string-comparison fallback in `check_guess` and always pass the secret as an int, so hints are consistent.
+  3. **New game:** added a `start_new_game()` helper that uses the selected difficulty's range and resets the secret, attempts, score, status and history. It runs on first load, when New Game is clicked, and when the difficulty changes.
+  4. **Range message:** the prompt now shows the real `low` and `high`.
+  5. **Attempts:** the counter starts at 0 and only increases on a valid guess.
+  6. **Scoring:** "Too High" always costs 5 points, and a win scores `100 - 10 * attempt` (minimum 10).
+  7. **Tests:** updated `tests/test_game_logic.py` to unpack the `(outcome, message)` tuple that `check_guess` returns, and checked the fixes by playing through the app.
 
 ## 📸 Demo Walkthrough
 
@@ -46,11 +68,18 @@ A sample game on **Normal** difficulty (range 1–100, 8 attempts), where the se
 
 ## 🧪 Test Results
 
-```
-# Paste your pytest output here, e.g.:
-# pytest tests/
-# ========================= X passed in 0.XXs =========================
-```
+==================================================== test session starts ====================================================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\inthe\Desktop\AI110\ai110-module1show-gameglitchinvestigator-starter
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collected 3 items                                                                                                            
+
+tests\test_game_logic.py ...                                                                                           [100%]
+
+===================================================== 3 passed in 0.02s =====================================================
+
 
 ## 🚀 Stretch Features
 
