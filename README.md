@@ -64,7 +64,9 @@ A sample game on **Normal** difficulty (range 1–100, 8 attempts), where the se
 7. The user clicks **New Game**. The score, attempts and history reset, and a new secret is chosen within the current difficulty's range.
 8. Switching to **Easy** also starts a fresh game, and the message changes to "Guess a number between 1 and 20."
 
-**Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
+**Screenshot**: a winning game on Normal difficulty.
+
+![Fixed, winning game](Game%20Glitch%20Success.png)
 
 ## 🧪 Test Results
 
